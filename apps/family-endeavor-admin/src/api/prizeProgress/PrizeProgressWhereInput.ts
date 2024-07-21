@@ -8,4 +8,6 @@ export type PrizeProgressWhereInput = {
   datePurchased?: DateTimeNullableFilter;
   kid?: KidWhereUniqueInput;
   prize?: PrizeWhereUniqueInput;
+  status?: "Option1";
+  dateRedeemed?: DateTimeNullableFilter;
 };

@@ -8,4 +8,6 @@ export type PrizeProgress = {
   datePurchased: Date | null;
   kid?: Kid | null;
   prize?: Prize | null;
+  status?: "Option1" | null;
+  dateRedeemed: Date | null;
 };

@@ -181,6 +181,9 @@ export class PrizeControllerBase {
             id: true,
           },
         },
+
+        status: true,
+        dateRedeemed: true,
       },
     });
     if (results === null) {

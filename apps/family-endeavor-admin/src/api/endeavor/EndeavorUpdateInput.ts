@@ -1,5 +1,4 @@
 import { RewardWhereUniqueInput } from "../reward/RewardWhereUniqueInput";
-import { ProgressUpdateManyWithoutEndeavorsInput } from "./ProgressUpdateManyWithoutEndeavorsInput";
 import { EndeavorProgressUpdateManyWithoutEndeavorsInput } from "./EndeavorProgressUpdateManyWithoutEndeavorsInput";
 
 export type EndeavorUpdateInput = {
@@ -8,6 +7,5 @@ export type EndeavorUpdateInput = {
   dueDate?: Date | null;
   reward?: RewardWhereUniqueInput | null;
   assignedTo?: string | null;
-  progresses?: ProgressUpdateManyWithoutEndeavorsInput;
   endeavorProgresses?: EndeavorProgressUpdateManyWithoutEndeavorsInput;
 };

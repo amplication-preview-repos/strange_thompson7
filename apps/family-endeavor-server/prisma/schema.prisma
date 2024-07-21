@@ -17,7 +17,6 @@ model Endeavor {
   reward             Reward?            @relation(fields: [rewardId], references: [id])
   rewardId           String?
   assignedTo         String?
-  progresses         Progress[]
   endeavorProgresses EndeavorProgress[]
 }
 
@@ -30,20 +29,6 @@ model Parent {
   kids      Kid[]
 }
 
-model Progress {
-  id               String              @id @default(cuid())
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
-  status           EnumProgressStatus?
-  blueGemsEarned   Int?
-  redGemsEarned    Int?
-  purpleGemsEarned Int?
-  kid              Kid?                @relation(fields: [kidId], references: [id])
-  kidId            String?
-  endeavor         Endeavor?           @relation(fields: [endeavorId], references: [id])
-  endeavorId       String?
-}
-
 model Kid {
   id                 String             @id @default(cuid())
   createdAt          DateTime           @default(now())
@@ -54,7 +39,6 @@ model Kid {
   parent             Parent?            @relation(fields: [parentId], references: [id])
   parentId           String?
   gender             EnumKidGender?
-  progresses         Progress[]
   endeavorProgresses EndeavorProgress[]
   prizeProgresses    PrizeProgress[]
 }
@@ -82,14 +66,16 @@ model Reward {
 }
 
 model PrizeProgress {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id            String                   @id @default(cuid())
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
   datePurchased DateTime?
-  kid           Kid?      @relation(fields: [kidId], references: [id])
+  kid           Kid?                     @relation(fields: [kidId], references: [id])
   kidId         String?
-  prize         Prize?    @relation(fields: [prizeId], references: [id])
+  prize         Prize?                   @relation(fields: [prizeId], references: [id])
   prizeId       String?
+  status        EnumPrizeProgressStatus?
+  dateRedeemed  DateTime?
 }
 
 model EndeavorProgress {
@@ -106,11 +92,11 @@ model EndeavorProgress {
   endeavorId       String?
 }
 
-enum EnumProgressStatus {
+enum EnumKidGender {
   Option1
 }
 
-enum EnumKidGender {
+enum EnumPrizeProgressStatus {
   Option1
 }
 

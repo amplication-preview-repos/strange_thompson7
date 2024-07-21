@@ -20,7 +20,6 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { Reward } from "../../reward/base/Reward";
-import { Progress } from "../../progress/base/Progress";
 import { EndeavorProgress } from "../../endeavorProgress/base/EndeavorProgress";
 
 @ObjectType()
@@ -104,15 +103,6 @@ class Endeavor {
     nullable: true,
   })
   assignedTo!: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: () => [Progress],
-  })
-  @ValidateNested()
-  @Type(() => Progress)
-  @IsOptional()
-  progresses?: Array<Progress>;
 
   @ApiProperty({
     required: false,

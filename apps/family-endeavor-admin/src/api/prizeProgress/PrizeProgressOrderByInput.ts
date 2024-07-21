@@ -7,4 +7,6 @@ export type PrizeProgressOrderByInput = {
   datePurchased?: SortOrder;
   kidId?: SortOrder;
   prizeId?: SortOrder;
+  status?: SortOrder;
+  dateRedeemed?: SortOrder;
 };

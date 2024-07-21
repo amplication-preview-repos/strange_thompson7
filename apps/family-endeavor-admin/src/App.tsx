@@ -13,10 +13,6 @@ import { ParentList } from "./parent/ParentList";
 import { ParentCreate } from "./parent/ParentCreate";
 import { ParentEdit } from "./parent/ParentEdit";
 import { ParentShow } from "./parent/ParentShow";
-import { ProgressList } from "./progress/ProgressList";
-import { ProgressCreate } from "./progress/ProgressCreate";
-import { ProgressEdit } from "./progress/ProgressEdit";
-import { ProgressShow } from "./progress/ProgressShow";
 import { KidList } from "./kid/KidList";
 import { KidCreate } from "./kid/KidCreate";
 import { KidEdit } from "./kid/KidEdit";
@@ -76,13 +72,6 @@ const App = (): React.ReactElement => {
           edit={ParentEdit}
           create={ParentCreate}
           show={ParentShow}
-        />
-        <Resource
-          name="Progress"
-          list={ProgressList}
-          edit={ProgressEdit}
-          create={ProgressCreate}
-          show={ProgressShow}
         />
         <Resource
           name="Kid"

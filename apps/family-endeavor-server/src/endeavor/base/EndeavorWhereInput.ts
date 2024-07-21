@@ -17,7 +17,6 @@ import { IsOptional, ValidateNested } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { RewardWhereUniqueInput } from "../../reward/base/RewardWhereUniqueInput";
-import { ProgressListRelationFilter } from "../../progress/base/ProgressListRelationFilter";
 import { EndeavorProgressListRelationFilter } from "../../endeavorProgress/base/EndeavorProgressListRelationFilter";
 
 @InputType()
@@ -88,18 +87,6 @@ class EndeavorWhereInput {
     nullable: true,
   })
   assignedTo?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: () => ProgressListRelationFilter,
-  })
-  @ValidateNested()
-  @Type(() => ProgressListRelationFilter)
-  @IsOptional()
-  @Field(() => ProgressListRelationFilter, {
-    nullable: true,
-  })
-  progresses?: ProgressListRelationFilter;
 
   @ApiProperty({
     required: false,

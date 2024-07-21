@@ -22,12 +22,14 @@ const CREATE_INPUT = {
   createdAt: new Date(),
   updatedAt: new Date(),
   datePurchased: new Date(),
+  dateRedeemed: new Date(),
 };
 const CREATE_RESULT = {
   id: "exampleId",
   createdAt: new Date(),
   updatedAt: new Date(),
   datePurchased: new Date(),
+  dateRedeemed: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
@@ -35,6 +37,7 @@ const FIND_MANY_RESULT = [
     createdAt: new Date(),
     updatedAt: new Date(),
     datePurchased: new Date(),
+    dateRedeemed: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
@@ -42,6 +45,7 @@ const FIND_ONE_RESULT = {
   createdAt: new Date(),
   updatedAt: new Date(),
   datePurchased: new Date(),
+  dateRedeemed: new Date(),
 };
 
 const service = {
@@ -129,6 +133,7 @@ describe("PrizeProgress", () => {
         createdAt: CREATE_RESULT.createdAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
         datePurchased: CREATE_RESULT.datePurchased.toISOString(),
+        dateRedeemed: CREATE_RESULT.dateRedeemed.toISOString(),
       });
   });
 
@@ -142,6 +147,7 @@ describe("PrizeProgress", () => {
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
           datePurchased: FIND_MANY_RESULT[0].datePurchased.toISOString(),
+          dateRedeemed: FIND_MANY_RESULT[0].dateRedeemed.toISOString(),
         },
       ]);
   });
@@ -166,6 +172,7 @@ describe("PrizeProgress", () => {
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
         datePurchased: FIND_ONE_RESULT.datePurchased.toISOString(),
+        dateRedeemed: FIND_ONE_RESULT.dateRedeemed.toISOString(),
       });
   });
 
@@ -180,6 +187,7 @@ describe("PrizeProgress", () => {
         createdAt: CREATE_RESULT.createdAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
         datePurchased: CREATE_RESULT.datePurchased.toISOString(),
+        dateRedeemed: CREATE_RESULT.dateRedeemed.toISOString(),
       })
       .then(function () {
         agent

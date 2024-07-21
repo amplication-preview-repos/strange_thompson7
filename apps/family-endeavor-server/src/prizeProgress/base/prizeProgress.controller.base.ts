@@ -63,6 +63,9 @@ export class PrizeProgressControllerBase {
             id: true,
           },
         },
+
+        status: true,
+        dateRedeemed: true,
       },
     });
   }
@@ -93,6 +96,9 @@ export class PrizeProgressControllerBase {
             id: true,
           },
         },
+
+        status: true,
+        dateRedeemed: true,
       },
     });
   }
@@ -122,6 +128,9 @@ export class PrizeProgressControllerBase {
             id: true,
           },
         },
+
+        status: true,
+        dateRedeemed: true,
       },
     });
     if (result === null) {
@@ -174,6 +183,9 @@ export class PrizeProgressControllerBase {
               id: true,
             },
           },
+
+          status: true,
+          dateRedeemed: true,
         },
       });
     } catch (error) {
@@ -212,6 +224,9 @@ export class PrizeProgressControllerBase {
               id: true,
             },
           },
+
+          status: true,
+          dateRedeemed: true,
         },
       });
     } catch (error) {

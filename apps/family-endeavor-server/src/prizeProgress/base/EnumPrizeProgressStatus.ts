@@ -11,10 +11,10 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { registerEnumType } from "@nestjs/graphql";
 
-export enum EnumProgressStatus {
+export enum EnumPrizeProgressStatus {
   Option_1 = "Option1",
 }
 
-registerEnumType(EnumProgressStatus, {
-  name: "EnumProgressStatus",
+registerEnumType(EnumPrizeProgressStatus, {
+  name: "EnumPrizeProgressStatus",
 });

@@ -27,7 +27,6 @@ import { InputJsonValue } from "../../types";
 import { ParentWhereUniqueInput } from "../../parent/base/ParentWhereUniqueInput";
 import { Type } from "class-transformer";
 import { EnumKidGender } from "./EnumKidGender";
-import { ProgressCreateNestedManyWithoutKidsInput } from "./ProgressCreateNestedManyWithoutKidsInput";
 import { EndeavorProgressCreateNestedManyWithoutKidsInput } from "./EndeavorProgressCreateNestedManyWithoutKidsInput";
 import { PrizeProgressCreateNestedManyWithoutKidsInput } from "./PrizeProgressCreateNestedManyWithoutKidsInput";
 
@@ -90,18 +89,6 @@ class KidCreateInput {
     nullable: true,
   })
   gender?: "Option1" | null;
-
-  @ApiProperty({
-    required: false,
-    type: () => ProgressCreateNestedManyWithoutKidsInput,
-  })
-  @ValidateNested()
-  @Type(() => ProgressCreateNestedManyWithoutKidsInput)
-  @IsOptional()
-  @Field(() => ProgressCreateNestedManyWithoutKidsInput, {
-    nullable: true,
-  })
-  progresses?: ProgressCreateNestedManyWithoutKidsInput;
 
   @ApiProperty({
     required: false,

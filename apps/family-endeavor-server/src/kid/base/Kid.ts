@@ -30,7 +30,6 @@ import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
 import { Parent } from "../../parent/base/Parent";
 import { EnumKidGender } from "./EnumKidGender";
-import { Progress } from "../../progress/base/Progress";
 import { EndeavorProgress } from "../../endeavorProgress/base/EndeavorProgress";
 import { PrizeProgress } from "../../prizeProgress/base/PrizeProgress";
 
@@ -114,15 +113,6 @@ class Kid {
     nullable: true,
   })
   gender?: "Option1" | null;
-
-  @ApiProperty({
-    required: false,
-    type: () => [Progress],
-  })
-  @ValidateNested()
-  @Type(() => Progress)
-  @IsOptional()
-  progresses?: Array<Progress>;
 
   @ApiProperty({
     required: false,

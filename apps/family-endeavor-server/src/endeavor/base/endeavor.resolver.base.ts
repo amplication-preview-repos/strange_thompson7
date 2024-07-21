@@ -20,8 +20,6 @@ import { EndeavorFindUniqueArgs } from "./EndeavorFindUniqueArgs";
 import { CreateEndeavorArgs } from "./CreateEndeavorArgs";
 import { UpdateEndeavorArgs } from "./UpdateEndeavorArgs";
 import { DeleteEndeavorArgs } from "./DeleteEndeavorArgs";
-import { ProgressFindManyArgs } from "../../progress/base/ProgressFindManyArgs";
-import { Progress } from "../../progress/base/Progress";
 import { EndeavorProgressFindManyArgs } from "../../endeavorProgress/base/EndeavorProgressFindManyArgs";
 import { EndeavorProgress } from "../../endeavorProgress/base/EndeavorProgress";
 import { Reward } from "../../reward/base/Reward";
@@ -116,20 +114,6 @@ export class EndeavorResolverBase {
       }
       throw error;
     }
-  }
-
-  @graphql.ResolveField(() => [Progress], { name: "progresses" })
-  async findProgresses(
-    @graphql.Parent() parent: Endeavor,
-    @graphql.Args() args: ProgressFindManyArgs
-  ): Promise<Progress[]> {
-    const results = await this.service.findProgresses(parent.id, args);
-
-    if (!results) {
-      return [];
-    }
-
-    return results;
   }
 
   @graphql.ResolveField(() => [EndeavorProgress], {

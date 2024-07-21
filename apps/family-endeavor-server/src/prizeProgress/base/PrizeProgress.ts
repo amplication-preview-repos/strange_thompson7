@@ -11,10 +11,17 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsDate, IsOptional, ValidateNested } from "class-validator";
+import {
+  IsString,
+  IsDate,
+  IsOptional,
+  ValidateNested,
+  IsEnum,
+} from "class-validator";
 import { Type } from "class-transformer";
 import { Kid } from "../../kid/base/Kid";
 import { Prize } from "../../prize/base/Prize";
+import { EnumPrizeProgressStatus } from "./EnumPrizeProgressStatus";
 
 @ObjectType()
 class PrizeProgress {
@@ -70,6 +77,28 @@ class PrizeProgress {
   @Type(() => Prize)
   @IsOptional()
   prize?: Prize | null;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumPrizeProgressStatus,
+  })
+  @IsEnum(EnumPrizeProgressStatus)
+  @IsOptional()
+  @Field(() => EnumPrizeProgressStatus, {
+    nullable: true,
+  })
+  status?: "Option1" | null;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  dateRedeemed!: Date | null;
 }
 
 export { PrizeProgress as PrizeProgress };

@@ -24,6 +24,8 @@ export const PrizeProgressShow = (props: ShowProps): React.ReactElement => {
         <ReferenceField label="Prize" source="prize.id" reference="Prize">
           <TextField source={PRIZE_TITLE_FIELD} />
         </ReferenceField>
+        <TextField label="status" source="status" />
+        <TextField label="dateRedeemed" source="dateRedeemed" />
       </SimpleShowLayout>
     </Show>
   );

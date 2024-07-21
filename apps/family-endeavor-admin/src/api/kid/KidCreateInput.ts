@@ -1,6 +1,5 @@
 import { InputJsonValue } from "../../types";
 import { ParentWhereUniqueInput } from "../parent/ParentWhereUniqueInput";
-import { ProgressCreateNestedManyWithoutKidsInput } from "./ProgressCreateNestedManyWithoutKidsInput";
 import { EndeavorProgressCreateNestedManyWithoutKidsInput } from "./EndeavorProgressCreateNestedManyWithoutKidsInput";
 import { PrizeProgressCreateNestedManyWithoutKidsInput } from "./PrizeProgressCreateNestedManyWithoutKidsInput";
 
@@ -10,7 +9,6 @@ export type KidCreateInput = {
   yearOfBirth?: number | null;
   parent?: ParentWhereUniqueInput | null;
   gender?: "Option1" | null;
-  progresses?: ProgressCreateNestedManyWithoutKidsInput;
   endeavorProgresses?: EndeavorProgressCreateNestedManyWithoutKidsInput;
   prizeProgresses?: PrizeProgressCreateNestedManyWithoutKidsInput;
 };

@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { EndeavorModule } from "./endeavor/endeavor.module";
 import { ParentModule } from "./parent/parent.module";
-import { ProgressModule } from "./progress/progress.module";
 import { KidModule } from "./kid/kid.module";
 import { PrizeModule } from "./prize/prize.module";
 import { RewardModule } from "./reward/reward.module";
@@ -21,7 +20,6 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
   imports: [
     EndeavorModule,
     ParentModule,
-    ProgressModule,
     KidModule,
     PrizeModule,
     RewardModule,

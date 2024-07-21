@@ -23,6 +23,15 @@ export const PrizeProgressCreate = (props: CreateProps): React.ReactElement => {
         <ReferenceInput source="prize.id" reference="Prize" label="Prize">
           <SelectInput optionText={PrizeTitle} />
         </ReferenceInput>
+        <SelectInput
+          source="status"
+          label="status"
+          choices={[{ label: "Option 1", value: "Option1" }]}
+          optionText="label"
+          allowEmpty
+          optionValue="value"
+        />
+        <DateTimeInput label="dateRedeemed" source="dateRedeemed" />
       </SimpleForm>
     </Create>
   );

@@ -13,7 +13,6 @@ import {
 } from "react-admin";
 
 import { RewardTitle } from "../reward/RewardTitle";
-import { ProgressTitle } from "../progress/ProgressTitle";
 import { EndeavorProgressTitle } from "../endeavorProgress/EndeavorProgressTitle";
 
 export const EndeavorEdit = (props: EditProps): React.ReactElement => {
@@ -27,14 +26,6 @@ export const EndeavorEdit = (props: EditProps): React.ReactElement => {
           <SelectInput optionText={RewardTitle} />
         </ReferenceInput>
         <TextInput label="AssignedTo" source="assignedTo" />
-        <ReferenceArrayInput
-          source="progresses"
-          reference="Progress"
-          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
-          format={(value: any) => value && value.map((v: any) => v.id)}
-        >
-          <SelectArrayInput optionText={ProgressTitle} />
-        </ReferenceArrayInput>
         <ReferenceArrayInput
           source="endeavorProgresses"
           reference="EndeavorProgress"

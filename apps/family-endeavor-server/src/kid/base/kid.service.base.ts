@@ -14,7 +14,6 @@ import { PrismaService } from "../../prisma/prisma.service";
 import {
   Prisma,
   Kid as PrismaKid,
-  Progress as PrismaProgress,
   EndeavorProgress as PrismaEndeavorProgress,
   PrizeProgress as PrismaPrizeProgress,
   Parent as PrismaParent,
@@ -41,17 +40,6 @@ export class KidServiceBase {
   }
   async deleteKid(args: Prisma.KidDeleteArgs): Promise<PrismaKid> {
     return this.prisma.kid.delete(args);
-  }
-
-  async findProgresses(
-    parentId: string,
-    args: Prisma.ProgressFindManyArgs
-  ): Promise<PrismaProgress[]> {
-    return this.prisma.kid
-      .findUniqueOrThrow({
-        where: { id: parentId },
-      })
-      .progresses(args);
   }
 
   async findEndeavorProgresses(

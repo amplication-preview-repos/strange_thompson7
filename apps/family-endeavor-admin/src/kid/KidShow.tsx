@@ -31,31 +31,6 @@ export const KidShow = (props: ShowProps): React.ReactElement => {
         </ReferenceField>
         <TextField label="gender" source="gender" />
         <ReferenceManyField
-          reference="Progress"
-          target="kidId"
-          label="Progresses"
-        >
-          <Datagrid rowClick="show">
-            <TextField label="ID" source="id" />
-            <DateField source="createdAt" label="Created At" />
-            <DateField source="updatedAt" label="Updated At" />
-            <TextField label="status" source="status" />
-            <TextField label="blueGemsEarned" source="blueGemsEarned" />
-            <TextField label="redGemsEarned" source="redGemsEarned" />
-            <TextField label="purpleGemsEarned" source="purpleGemsEarned" />
-            <ReferenceField label="Kid" source="kid.id" reference="Kid">
-              <TextField source={KID_TITLE_FIELD} />
-            </ReferenceField>
-            <ReferenceField
-              label="Endeavor"
-              source="endeavor.id"
-              reference="Endeavor"
-            >
-              <TextField source={ENDEAVOR_TITLE_FIELD} />
-            </ReferenceField>
-          </Datagrid>
-        </ReferenceManyField>
-        <ReferenceManyField
           reference="EndeavorProgress"
           target="kidId"
           label="EndeavorProgresses"
@@ -96,6 +71,8 @@ export const KidShow = (props: ShowProps): React.ReactElement => {
             <ReferenceField label="Prize" source="prize.id" reference="Prize">
               <TextField source={PRIZE_TITLE_FIELD} />
             </ReferenceField>
+            <TextField label="status" source="status" />
+            <TextField label="dateRedeemed" source="dateRedeemed" />
           </Datagrid>
         </ReferenceManyField>
       </SimpleShowLayout>

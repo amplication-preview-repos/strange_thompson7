@@ -22,9 +22,6 @@ import { Endeavor } from "./Endeavor";
 import { EndeavorFindManyArgs } from "./EndeavorFindManyArgs";
 import { EndeavorWhereUniqueInput } from "./EndeavorWhereUniqueInput";
 import { EndeavorUpdateInput } from "./EndeavorUpdateInput";
-import { ProgressFindManyArgs } from "../../progress/base/ProgressFindManyArgs";
-import { Progress } from "../../progress/base/Progress";
-import { ProgressWhereUniqueInput } from "../../progress/base/ProgressWhereUniqueInput";
 import { EndeavorProgressFindManyArgs } from "../../endeavorProgress/base/EndeavorProgressFindManyArgs";
 import { EndeavorProgress } from "../../endeavorProgress/base/EndeavorProgress";
 import { EndeavorProgressWhereUniqueInput } from "../../endeavorProgress/base/EndeavorProgressWhereUniqueInput";
@@ -204,96 +201,6 @@ export class EndeavorControllerBase {
       }
       throw error;
     }
-  }
-
-  @common.Get("/:id/progresses")
-  @ApiNestedQuery(ProgressFindManyArgs)
-  async findProgresses(
-    @common.Req() request: Request,
-    @common.Param() params: EndeavorWhereUniqueInput
-  ): Promise<Progress[]> {
-    const query = plainToClass(ProgressFindManyArgs, request.query);
-    const results = await this.service.findProgresses(params.id, {
-      ...query,
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        status: true,
-        blueGemsEarned: true,
-        redGemsEarned: true,
-        purpleGemsEarned: true,
-
-        kid: {
-          select: {
-            id: true,
-          },
-        },
-
-        endeavor: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
-    if (results === null) {
-      throw new errors.NotFoundException(
-        `No resource was found for ${JSON.stringify(params)}`
-      );
-    }
-    return results;
-  }
-
-  @common.Post("/:id/progresses")
-  async connectProgresses(
-    @common.Param() params: EndeavorWhereUniqueInput,
-    @common.Body() body: ProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      progresses: {
-        connect: body,
-      },
-    };
-    await this.service.updateEndeavor({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Patch("/:id/progresses")
-  async updateProgresses(
-    @common.Param() params: EndeavorWhereUniqueInput,
-    @common.Body() body: ProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      progresses: {
-        set: body,
-      },
-    };
-    await this.service.updateEndeavor({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/progresses")
-  async disconnectProgresses(
-    @common.Param() params: EndeavorWhereUniqueInput,
-    @common.Body() body: ProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      progresses: {
-        disconnect: body,
-      },
-    };
-    await this.service.updateEndeavor({
-      where: params,
-      data,
-      select: { id: true },
-    });
   }
 
   @common.Get("/:id/endeavorProgresses")

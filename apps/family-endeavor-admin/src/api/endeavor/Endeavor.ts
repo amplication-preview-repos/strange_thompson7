@@ -1,5 +1,4 @@
 import { Reward } from "../reward/Reward";
-import { Progress } from "../progress/Progress";
 import { EndeavorProgress } from "../endeavorProgress/EndeavorProgress";
 
 export type Endeavor = {
@@ -11,6 +10,5 @@ export type Endeavor = {
   dueDate: Date | null;
   reward?: Reward | null;
   assignedTo: string | null;
-  progresses?: Array<Progress>;
   endeavorProgresses?: Array<EndeavorProgress>;
 };

@@ -13,10 +13,11 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
-import { IsOptional, ValidateNested } from "class-validator";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { KidWhereUniqueInput } from "../../kid/base/KidWhereUniqueInput";
 import { PrizeWhereUniqueInput } from "../../prize/base/PrizeWhereUniqueInput";
+import { EnumPrizeProgressStatus } from "./EnumPrizeProgressStatus";
 
 @InputType()
 class PrizeProgressWhereInput {
@@ -65,6 +66,28 @@ class PrizeProgressWhereInput {
     nullable: true,
   })
   prize?: PrizeWhereUniqueInput;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumPrizeProgressStatus,
+  })
+  @IsEnum(EnumPrizeProgressStatus)
+  @IsOptional()
+  @Field(() => EnumPrizeProgressStatus, {
+    nullable: true,
+  })
+  status?: "Option1";
+
+  @ApiProperty({
+    required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  dateRedeemed?: DateTimeNullableFilter;
 }
 
 export { PrizeProgressWhereInput as PrizeProgressWhereInput };

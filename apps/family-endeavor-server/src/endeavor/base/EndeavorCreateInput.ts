@@ -20,7 +20,6 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { RewardWhereUniqueInput } from "../../reward/base/RewardWhereUniqueInput";
-import { ProgressCreateNestedManyWithoutEndeavorsInput } from "./ProgressCreateNestedManyWithoutEndeavorsInput";
 import { EndeavorProgressCreateNestedManyWithoutEndeavorsInput } from "./EndeavorProgressCreateNestedManyWithoutEndeavorsInput";
 
 @InputType()
@@ -83,18 +82,6 @@ class EndeavorCreateInput {
     nullable: true,
   })
   assignedTo?: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: () => ProgressCreateNestedManyWithoutEndeavorsInput,
-  })
-  @ValidateNested()
-  @Type(() => ProgressCreateNestedManyWithoutEndeavorsInput)
-  @IsOptional()
-  @Field(() => ProgressCreateNestedManyWithoutEndeavorsInput, {
-    nullable: true,
-  })
-  progresses?: ProgressCreateNestedManyWithoutEndeavorsInput;
 
   @ApiProperty({
     required: false,

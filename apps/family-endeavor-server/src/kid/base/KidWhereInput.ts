@@ -19,7 +19,6 @@ import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { IntNullableFilter } from "../../util/IntNullableFilter";
 import { ParentWhereUniqueInput } from "../../parent/base/ParentWhereUniqueInput";
 import { EnumKidGender } from "./EnumKidGender";
-import { ProgressListRelationFilter } from "../../progress/base/ProgressListRelationFilter";
 import { EndeavorProgressListRelationFilter } from "../../endeavorProgress/base/EndeavorProgressListRelationFilter";
 import { PrizeProgressListRelationFilter } from "../../prizeProgress/base/PrizeProgressListRelationFilter";
 
@@ -91,18 +90,6 @@ class KidWhereInput {
     nullable: true,
   })
   gender?: "Option1";
-
-  @ApiProperty({
-    required: false,
-    type: () => ProgressListRelationFilter,
-  })
-  @ValidateNested()
-  @Type(() => ProgressListRelationFilter)
-  @IsOptional()
-  @Field(() => ProgressListRelationFilter, {
-    nullable: true,
-  })
-  progresses?: ProgressListRelationFilter;
 
   @ApiProperty({
     required: false,
