@@ -1,0 +1,119 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Endeavor {
+  id                 String             @id @default(cuid())
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  description        String?
+  name               String?
+  dueDate            DateTime?
+  reward             Reward?            @relation(fields: [rewardId], references: [id])
+  rewardId           String?
+  assignedTo         String?
+  progresses         Progress[]
+  endeavorProgresses EndeavorProgress[]
+}
+
+model Parent {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String?
+  name      String?
+  kids      Kid[]
+}
+
+model Progress {
+  id               String              @id @default(cuid())
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  status           EnumProgressStatus?
+  blueGemsEarned   Int?
+  redGemsEarned    Int?
+  purpleGemsEarned Int?
+  kid              Kid?                @relation(fields: [kidId], references: [id])
+  kidId            String?
+  endeavor         Endeavor?           @relation(fields: [endeavorId], references: [id])
+  endeavorId       String?
+}
+
+model Kid {
+  id                 String             @id @default(cuid())
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  profilePicture     Json?
+  name               String?
+  yearOfBirth        Int?
+  parent             Parent?            @relation(fields: [parentId], references: [id])
+  parentId           String?
+  gender             EnumKidGender?
+  progresses         Progress[]
+  endeavorProgresses EndeavorProgress[]
+  prizeProgresses    PrizeProgress[]
+}
+
+model Prize {
+  id               String          @id @default(cuid())
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  name             String?
+  description      String?
+  costInBlueGems   Int?
+  costInPurpleGems Int?
+  costInRedGems    Int?
+  prizeProgresses  PrizeProgress[]
+}
+
+model Reward {
+  id         String     @id @default(cuid())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  endeavors  Endeavor[]
+  blueGems   Int?
+  redGems    Int?
+  purpleGems Int?
+}
+
+model PrizeProgress {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  datePurchased DateTime?
+  kid           Kid?      @relation(fields: [kidId], references: [id])
+  kidId         String?
+  prize         Prize?    @relation(fields: [prizeId], references: [id])
+  prizeId       String?
+}
+
+model EndeavorProgress {
+  id               String                      @id @default(cuid())
+  createdAt        DateTime                    @default(now())
+  updatedAt        DateTime                    @updatedAt
+  status           EnumEndeavorProgressStatus?
+  blueGemsEarned   Int?
+  redGemsEarned    Int?
+  purpleGemsEarned Int?
+  kid              Kid?                        @relation(fields: [kidId], references: [id])
+  kidId            String?
+  endeavor         Endeavor?                   @relation(fields: [endeavorId], references: [id])
+  endeavorId       String?
+}
+
+enum EnumProgressStatus {
+  Option1
+}
+
+enum EnumKidGender {
+  Option1
+}
+
+enum EnumEndeavorProgressStatus {
+  Option1
+}
