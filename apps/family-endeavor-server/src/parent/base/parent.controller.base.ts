@@ -16,7 +16,11 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import * as nestAccessControl from "nest-access-control";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { ParentService } from "../parent.service";
+import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
+import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { ParentCreateInput } from "./ParentCreateInput";
 import { Parent } from "./Parent";
 import { ParentFindManyArgs } from "./ParentFindManyArgs";
@@ -26,10 +30,24 @@ import { KidFindManyArgs } from "../../kid/base/KidFindManyArgs";
 import { Kid } from "../../kid/base/Kid";
 import { KidWhereUniqueInput } from "../../kid/base/KidWhereUniqueInput";
 
+@swagger.ApiBearerAuth()
+@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class ParentControllerBase {
-  constructor(protected readonly service: ParentService) {}
+  constructor(
+    protected readonly service: ParentService,
+    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
+  ) {}
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Post()
   @swagger.ApiCreatedResponse({ type: Parent })
+  @nestAccessControl.UseRoles({
+    resource: "Parent",
+    action: "create",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async createParent(@common.Body() data: ParentCreateInput): Promise<Parent> {
     return await this.service.createParent({
       data: {
@@ -57,9 +75,18 @@ export class ParentControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Parent] })
   @ApiNestedQuery(ParentFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Parent",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async parents(@common.Req() request: Request): Promise<Parent[]> {
     const args = plainToClass(ParentFindManyArgs, request.query);
     return this.service.parents({
@@ -80,9 +107,18 @@ export class ParentControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Parent })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Parent",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async parent(
     @common.Param() params: ParentWhereUniqueInput
   ): Promise<Parent | null> {
@@ -110,9 +146,18 @@ export class ParentControllerBase {
     return result;
   }
 
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Parent })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Parent",
+    action: "update",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async updateParent(
     @common.Param() params: ParentWhereUniqueInput,
     @common.Body() data: ParentUpdateInput
@@ -156,6 +201,14 @@ export class ParentControllerBase {
   @common.Delete("/:id")
   @swagger.ApiOkResponse({ type: Parent })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Parent",
+    action: "delete",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async deleteParent(
     @common.Param() params: ParentWhereUniqueInput
   ): Promise<Parent | null> {
@@ -186,8 +239,14 @@ export class ParentControllerBase {
     }
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/kids")
   @ApiNestedQuery(KidFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Kid",
+    action: "read",
+    possession: "any",
+  })
   async findKids(
     @common.Req() request: Request,
     @common.Param() params: ParentWhereUniqueInput
@@ -227,6 +286,11 @@ export class ParentControllerBase {
   }
 
   @common.Post("/:id/kids")
+  @nestAccessControl.UseRoles({
+    resource: "Parent",
+    action: "update",
+    possession: "any",
+  })
   async connectKids(
     @common.Param() params: ParentWhereUniqueInput,
     @common.Body() body: KidWhereUniqueInput[]
@@ -244,6 +308,11 @@ export class ParentControllerBase {
   }
 
   @common.Patch("/:id/kids")
+  @nestAccessControl.UseRoles({
+    resource: "Parent",
+    action: "update",
+    possession: "any",
+  })
   async updateKids(
     @common.Param() params: ParentWhereUniqueInput,
     @common.Body() body: KidWhereUniqueInput[]
@@ -261,6 +330,11 @@ export class ParentControllerBase {
   }
 
   @common.Delete("/:id/kids")
+  @nestAccessControl.UseRoles({
+    resource: "Parent",
+    action: "update",
+    possession: "any",
+  })
   async disconnectKids(
     @common.Param() params: ParentWhereUniqueInput,
     @common.Body() body: KidWhereUniqueInput[]

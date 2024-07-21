@@ -16,7 +16,11 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import * as nestAccessControl from "nest-access-control";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { KidService } from "../kid.service";
+import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
+import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { KidCreateInput } from "./KidCreateInput";
 import { Kid } from "./Kid";
 import { KidFindManyArgs } from "./KidFindManyArgs";
@@ -29,10 +33,24 @@ import { PrizeProgressFindManyArgs } from "../../prizeProgress/base/PrizeProgres
 import { PrizeProgress } from "../../prizeProgress/base/PrizeProgress";
 import { PrizeProgressWhereUniqueInput } from "../../prizeProgress/base/PrizeProgressWhereUniqueInput";
 
+@swagger.ApiBearerAuth()
+@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class KidControllerBase {
-  constructor(protected readonly service: KidService) {}
+  constructor(
+    protected readonly service: KidService,
+    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
+  ) {}
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Post()
   @swagger.ApiCreatedResponse({ type: Kid })
+  @nestAccessControl.UseRoles({
+    resource: "Kid",
+    action: "create",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async createKid(@common.Body() data: KidCreateInput): Promise<Kid> {
     return await this.service.createKid({
       data: {
@@ -75,9 +93,18 @@ export class KidControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Kid] })
   @ApiNestedQuery(KidFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Kid",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async kids(@common.Req() request: Request): Promise<Kid[]> {
     const args = plainToClass(KidFindManyArgs, request.query);
     return this.service.kids({
@@ -107,9 +134,18 @@ export class KidControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Kid })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Kid",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async kid(@common.Param() params: KidWhereUniqueInput): Promise<Kid | null> {
     const result = await this.service.kid({
       where: params,
@@ -144,9 +180,18 @@ export class KidControllerBase {
     return result;
   }
 
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Kid })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Kid",
+    action: "update",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async updateKid(
     @common.Param() params: KidWhereUniqueInput,
     @common.Body() data: KidUpdateInput
@@ -205,6 +250,14 @@ export class KidControllerBase {
   @common.Delete("/:id")
   @swagger.ApiOkResponse({ type: Kid })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Kid",
+    action: "delete",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async deleteKid(
     @common.Param() params: KidWhereUniqueInput
   ): Promise<Kid | null> {
@@ -244,8 +297,14 @@ export class KidControllerBase {
     }
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/endeavorProgresses")
   @ApiNestedQuery(EndeavorProgressFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "EndeavorProgress",
+    action: "read",
+    possession: "any",
+  })
   async findEndeavorProgresses(
     @common.Req() request: Request,
     @common.Param() params: KidWhereUniqueInput
@@ -284,6 +343,11 @@ export class KidControllerBase {
   }
 
   @common.Patch("/:id/endeavorProgresses")
+  @nestAccessControl.UseRoles({
+    resource: "Kid",
+    action: "update",
+    possession: "any",
+  })
   async updateEndeavorProgresses(
     @common.Param() params: KidWhereUniqueInput,
     @common.Body() body: EndeavorProgressWhereUniqueInput[]
@@ -300,8 +364,14 @@ export class KidControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/prizeProgresses")
   @ApiNestedQuery(PrizeProgressFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "PrizeProgress",
+    action: "read",
+    possession: "any",
+  })
   async findPrizeProgresses(
     @common.Req() request: Request,
     @common.Param() params: KidWhereUniqueInput
@@ -340,6 +410,11 @@ export class KidControllerBase {
   }
 
   @common.Patch("/:id/prizeProgresses")
+  @nestAccessControl.UseRoles({
+    resource: "Kid",
+    action: "update",
+    possession: "any",
+  })
   async updatePrizeProgresses(
     @common.Param() params: KidWhereUniqueInput,
     @common.Body() body: PrizeProgressWhereUniqueInput[]

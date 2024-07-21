@@ -16,7 +16,11 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import * as nestAccessControl from "nest-access-control";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { EndeavorService } from "../endeavor.service";
+import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
+import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { EndeavorCreateInput } from "./EndeavorCreateInput";
 import { Endeavor } from "./Endeavor";
 import { EndeavorFindManyArgs } from "./EndeavorFindManyArgs";
@@ -25,10 +29,24 @@ import { EndeavorUpdateInput } from "./EndeavorUpdateInput";
 import { EndeavorProgressFindManyArgs } from "../../endeavorProgress/base/EndeavorProgressFindManyArgs";
 import { EndeavorProgress } from "../../endeavorProgress/base/EndeavorProgress";
 
+@swagger.ApiBearerAuth()
+@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class EndeavorControllerBase {
-  constructor(protected readonly service: EndeavorService) {}
+  constructor(
+    protected readonly service: EndeavorService,
+    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
+  ) {}
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Post()
   @swagger.ApiCreatedResponse({ type: Endeavor })
+  @nestAccessControl.UseRoles({
+    resource: "Endeavor",
+    action: "create",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async createEndeavor(
     @common.Body() data: EndeavorCreateInput
   ): Promise<Endeavor> {
@@ -61,9 +79,18 @@ export class EndeavorControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Endeavor] })
   @ApiNestedQuery(EndeavorFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Endeavor",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async endeavors(@common.Req() request: Request): Promise<Endeavor[]> {
     const args = plainToClass(EndeavorFindManyArgs, request.query);
     return this.service.endeavors({
@@ -87,9 +114,18 @@ export class EndeavorControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Endeavor })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Endeavor",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async endeavor(
     @common.Param() params: EndeavorWhereUniqueInput
   ): Promise<Endeavor | null> {
@@ -120,9 +156,18 @@ export class EndeavorControllerBase {
     return result;
   }
 
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Endeavor })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Endeavor",
+    action: "update",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async updateEndeavor(
     @common.Param() params: EndeavorWhereUniqueInput,
     @common.Body() data: EndeavorUpdateInput
@@ -169,6 +214,14 @@ export class EndeavorControllerBase {
   @common.Delete("/:id")
   @swagger.ApiOkResponse({ type: Endeavor })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Endeavor",
+    action: "delete",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async deleteEndeavor(
     @common.Param() params: EndeavorWhereUniqueInput
   ): Promise<Endeavor | null> {
@@ -202,8 +255,14 @@ export class EndeavorControllerBase {
     }
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/endeavorProgresses")
   @ApiNestedQuery(EndeavorProgressFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "EndeavorProgress",
+    action: "read",
+    possession: "any",
+  })
   async findEndeavorProgresses(
     @common.Req() request: Request,
     @common.Param() params: EndeavorWhereUniqueInput

@@ -16,17 +16,34 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import * as nestAccessControl from "nest-access-control";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { PrizeProgressService } from "../prizeProgress.service";
+import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { PrizeProgressFindManyArgs } from "./PrizeProgressFindManyArgs";
 import { PrizeProgress } from "./PrizeProgress";
 import { PrizeProgressWhereUniqueInput } from "./PrizeProgressWhereUniqueInput";
 
+@swagger.ApiBearerAuth()
+@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class PrizeProgressControllerBase {
-  constructor(protected readonly service: PrizeProgressService) {}
+  constructor(
+    protected readonly service: PrizeProgressService,
+    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
+  ) {}
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [PrizeProgress] })
   @ApiNestedQuery(PrizeProgressFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "PrizeProgress",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async prizeProgresses(
     @common.Req() request: Request
   ): Promise<PrizeProgress[]> {
@@ -57,9 +74,18 @@ export class PrizeProgressControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: PrizeProgress })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "PrizeProgress",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async prizeProgress(
     @common.Param() params: PrizeProgressWhereUniqueInput
   ): Promise<PrizeProgress | null> {

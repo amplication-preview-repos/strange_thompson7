@@ -16,7 +16,11 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import * as nestAccessControl from "nest-access-control";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { PrizeService } from "../prize.service";
+import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
+import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { PrizeCreateInput } from "./PrizeCreateInput";
 import { Prize } from "./Prize";
 import { PrizeFindManyArgs } from "./PrizeFindManyArgs";
@@ -26,10 +30,24 @@ import { PrizeProgressFindManyArgs } from "../../prizeProgress/base/PrizeProgres
 import { PrizeProgress } from "../../prizeProgress/base/PrizeProgress";
 import { PrizeProgressWhereUniqueInput } from "../../prizeProgress/base/PrizeProgressWhereUniqueInput";
 
+@swagger.ApiBearerAuth()
+@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class PrizeControllerBase {
-  constructor(protected readonly service: PrizeService) {}
+  constructor(
+    protected readonly service: PrizeService,
+    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
+  ) {}
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Post()
   @swagger.ApiCreatedResponse({ type: Prize })
+  @nestAccessControl.UseRoles({
+    resource: "Prize",
+    action: "create",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async createPrize(@common.Body() data: PrizeCreateInput): Promise<Prize> {
     return await this.service.createPrize({
       data: data,
@@ -46,9 +64,18 @@ export class PrizeControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Prize] })
   @ApiNestedQuery(PrizeFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Prize",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async prizes(@common.Req() request: Request): Promise<Prize[]> {
     const args = plainToClass(PrizeFindManyArgs, request.query);
     return this.service.prizes({
@@ -66,9 +93,18 @@ export class PrizeControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Prize })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Prize",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async prize(
     @common.Param() params: PrizeWhereUniqueInput
   ): Promise<Prize | null> {
@@ -93,9 +129,18 @@ export class PrizeControllerBase {
     return result;
   }
 
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Prize })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Prize",
+    action: "update",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async updatePrize(
     @common.Param() params: PrizeWhereUniqueInput,
     @common.Body() data: PrizeUpdateInput
@@ -128,6 +173,14 @@ export class PrizeControllerBase {
   @common.Delete("/:id")
   @swagger.ApiOkResponse({ type: Prize })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Prize",
+    action: "delete",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async deletePrize(
     @common.Param() params: PrizeWhereUniqueInput
   ): Promise<Prize | null> {
@@ -155,8 +208,14 @@ export class PrizeControllerBase {
     }
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/prizeProgresses")
   @ApiNestedQuery(PrizeProgressFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "PrizeProgress",
+    action: "read",
+    possession: "any",
+  })
   async findPrizeProgresses(
     @common.Req() request: Request,
     @common.Param() params: PrizeWhereUniqueInput
@@ -195,6 +254,11 @@ export class PrizeControllerBase {
   }
 
   @common.Patch("/:id/prizeProgresses")
+  @nestAccessControl.UseRoles({
+    resource: "Prize",
+    action: "update",
+    possession: "any",
+  })
   async updatePrizeProgresses(
     @common.Param() params: PrizeWhereUniqueInput,
     @common.Body() body: PrizeProgressWhereUniqueInput[]

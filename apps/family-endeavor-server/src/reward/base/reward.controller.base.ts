@@ -16,7 +16,11 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import * as nestAccessControl from "nest-access-control";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { RewardService } from "../reward.service";
+import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
+import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { RewardCreateInput } from "./RewardCreateInput";
 import { Reward } from "./Reward";
 import { RewardFindManyArgs } from "./RewardFindManyArgs";
@@ -26,10 +30,24 @@ import { EndeavorFindManyArgs } from "../../endeavor/base/EndeavorFindManyArgs";
 import { Endeavor } from "../../endeavor/base/Endeavor";
 import { EndeavorWhereUniqueInput } from "../../endeavor/base/EndeavorWhereUniqueInput";
 
+@swagger.ApiBearerAuth()
+@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class RewardControllerBase {
-  constructor(protected readonly service: RewardService) {}
+  constructor(
+    protected readonly service: RewardService,
+    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
+  ) {}
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Post()
   @swagger.ApiCreatedResponse({ type: Reward })
+  @nestAccessControl.UseRoles({
+    resource: "Reward",
+    action: "create",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async createReward(@common.Body() data: RewardCreateInput): Promise<Reward> {
     return await this.service.createReward({
       data: data,
@@ -44,9 +62,18 @@ export class RewardControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Reward] })
   @ApiNestedQuery(RewardFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Reward",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async rewards(@common.Req() request: Request): Promise<Reward[]> {
     const args = plainToClass(RewardFindManyArgs, request.query);
     return this.service.rewards({
@@ -62,9 +89,18 @@ export class RewardControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Reward })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Reward",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async reward(
     @common.Param() params: RewardWhereUniqueInput
   ): Promise<Reward | null> {
@@ -87,9 +123,18 @@ export class RewardControllerBase {
     return result;
   }
 
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Reward })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Reward",
+    action: "update",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async updateReward(
     @common.Param() params: RewardWhereUniqueInput,
     @common.Body() data: RewardUpdateInput
@@ -120,6 +165,14 @@ export class RewardControllerBase {
   @common.Delete("/:id")
   @swagger.ApiOkResponse({ type: Reward })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Reward",
+    action: "delete",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async deleteReward(
     @common.Param() params: RewardWhereUniqueInput
   ): Promise<Reward | null> {
@@ -145,8 +198,14 @@ export class RewardControllerBase {
     }
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/endeavors")
   @ApiNestedQuery(EndeavorFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Endeavor",
+    action: "read",
+    possession: "any",
+  })
   async findEndeavors(
     @common.Req() request: Request,
     @common.Param() params: RewardWhereUniqueInput
@@ -180,6 +239,11 @@ export class RewardControllerBase {
   }
 
   @common.Post("/:id/endeavors")
+  @nestAccessControl.UseRoles({
+    resource: "Reward",
+    action: "update",
+    possession: "any",
+  })
   async connectEndeavors(
     @common.Param() params: RewardWhereUniqueInput,
     @common.Body() body: EndeavorWhereUniqueInput[]
@@ -197,6 +261,11 @@ export class RewardControllerBase {
   }
 
   @common.Patch("/:id/endeavors")
+  @nestAccessControl.UseRoles({
+    resource: "Reward",
+    action: "update",
+    possession: "any",
+  })
   async updateEndeavors(
     @common.Param() params: RewardWhereUniqueInput,
     @common.Body() body: EndeavorWhereUniqueInput[]
@@ -214,6 +283,11 @@ export class RewardControllerBase {
   }
 
   @common.Delete("/:id/endeavors")
+  @nestAccessControl.UseRoles({
+    resource: "Reward",
+    action: "update",
+    possession: "any",
+  })
   async disconnectEndeavors(
     @common.Param() params: RewardWhereUniqueInput,
     @common.Body() body: EndeavorWhereUniqueInput[]

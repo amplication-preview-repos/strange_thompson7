@@ -16,17 +16,34 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import * as nestAccessControl from "nest-access-control";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { EndeavorProgressService } from "../endeavorProgress.service";
+import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { EndeavorProgressFindManyArgs } from "./EndeavorProgressFindManyArgs";
 import { EndeavorProgress } from "./EndeavorProgress";
 import { EndeavorProgressWhereUniqueInput } from "./EndeavorProgressWhereUniqueInput";
 
+@swagger.ApiBearerAuth()
+@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class EndeavorProgressControllerBase {
-  constructor(protected readonly service: EndeavorProgressService) {}
+  constructor(
+    protected readonly service: EndeavorProgressService,
+    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
+  ) {}
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [EndeavorProgress] })
   @ApiNestedQuery(EndeavorProgressFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "EndeavorProgress",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async endeavorProgresses(
     @common.Req() request: Request
   ): Promise<EndeavorProgress[]> {
@@ -57,9 +74,18 @@ export class EndeavorProgressControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: EndeavorProgress })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "EndeavorProgress",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async endeavorProgress(
     @common.Param() params: EndeavorProgressWhereUniqueInput
   ): Promise<EndeavorProgress | null> {
