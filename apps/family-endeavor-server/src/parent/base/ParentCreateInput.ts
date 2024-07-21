@@ -19,6 +19,7 @@ import {
 } from "class-validator";
 import { KidCreateNestedManyWithoutParentsInput } from "./KidCreateNestedManyWithoutParentsInput";
 import { Type } from "class-transformer";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class ParentCreateInput {
@@ -56,6 +57,18 @@ class ParentCreateInput {
     nullable: true,
   })
   kids?: KidCreateNestedManyWithoutParentsInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  @Field(() => UserWhereUniqueInput, {
+    nullable: true,
+  })
+  user?: UserWhereUniqueInput | null;
 }
 
 export { ParentCreateInput as ParentCreateInput };

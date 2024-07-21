@@ -9,4 +9,5 @@ export type KidOrderByInput = {
   yearOfBirth?: SortOrder;
   parentId?: SortOrder;
   gender?: SortOrder;
+  userId?: SortOrder;
 };

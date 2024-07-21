@@ -49,10 +49,8 @@ const FIND_ONE_RESULT = {
 };
 
 const service = {
-  createPrizeProgress() {
-    return CREATE_RESULT;
-  },
   prizeProgresses: () => FIND_MANY_RESULT,
+
   prizeProgress: ({ where }: { where: { id: string } }) => {
     switch (where.id) {
       case existingId:
@@ -123,20 +121,6 @@ describe("PrizeProgress", () => {
     await app.init();
   });
 
-  test("POST /prizeProgresses", async () => {
-    await request(app.getHttpServer())
-      .post("/prizeProgresses")
-      .send(CREATE_INPUT)
-      .expect(HttpStatus.CREATED)
-      .expect({
-        ...CREATE_RESULT,
-        createdAt: CREATE_RESULT.createdAt.toISOString(),
-        updatedAt: CREATE_RESULT.updatedAt.toISOString(),
-        datePurchased: CREATE_RESULT.datePurchased.toISOString(),
-        dateRedeemed: CREATE_RESULT.dateRedeemed.toISOString(),
-      });
-  });
-
   test("GET /prizeProgresses", async () => {
     await request(app.getHttpServer())
       .get("/prizeProgresses")
@@ -173,30 +157,6 @@ describe("PrizeProgress", () => {
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
         datePurchased: FIND_ONE_RESULT.datePurchased.toISOString(),
         dateRedeemed: FIND_ONE_RESULT.dateRedeemed.toISOString(),
-      });
-  });
-
-  test("POST /prizeProgresses existing resource", async () => {
-    const agent = request(app.getHttpServer());
-    await agent
-      .post("/prizeProgresses")
-      .send(CREATE_INPUT)
-      .expect(HttpStatus.CREATED)
-      .expect({
-        ...CREATE_RESULT,
-        createdAt: CREATE_RESULT.createdAt.toISOString(),
-        updatedAt: CREATE_RESULT.updatedAt.toISOString(),
-        datePurchased: CREATE_RESULT.datePurchased.toISOString(),
-        dateRedeemed: CREATE_RESULT.dateRedeemed.toISOString(),
-      })
-      .then(function () {
-        agent
-          .post("/prizeProgresses")
-          .send(CREATE_INPUT)
-          .expect(HttpStatus.CONFLICT)
-          .expect({
-            statusCode: HttpStatus.CONFLICT,
-          });
       });
   });
 

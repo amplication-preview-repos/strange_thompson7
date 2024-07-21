@@ -5,6 +5,7 @@ import { IntNullableFilter } from "../../util/IntNullableFilter";
 import { ParentWhereUniqueInput } from "../parent/ParentWhereUniqueInput";
 import { EndeavorProgressListRelationFilter } from "../endeavorProgress/EndeavorProgressListRelationFilter";
 import { PrizeProgressListRelationFilter } from "../prizeProgress/PrizeProgressListRelationFilter";
+import { UserWhereUniqueInput } from "../user/UserWhereUniqueInput";
 
 export type KidWhereInput = {
   id?: StringFilter;
@@ -15,4 +16,5 @@ export type KidWhereInput = {
   gender?: "Option1";
   endeavorProgresses?: EndeavorProgressListRelationFilter;
   prizeProgresses?: PrizeProgressListRelationFilter;
+  user?: UserWhereUniqueInput;
 };

@@ -17,58 +17,12 @@ import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
 import { PrizeProgressService } from "../prizeProgress.service";
-import { PrizeProgressCreateInput } from "./PrizeProgressCreateInput";
-import { PrizeProgress } from "./PrizeProgress";
 import { PrizeProgressFindManyArgs } from "./PrizeProgressFindManyArgs";
+import { PrizeProgress } from "./PrizeProgress";
 import { PrizeProgressWhereUniqueInput } from "./PrizeProgressWhereUniqueInput";
-import { PrizeProgressUpdateInput } from "./PrizeProgressUpdateInput";
 
 export class PrizeProgressControllerBase {
   constructor(protected readonly service: PrizeProgressService) {}
-  @common.Post()
-  @swagger.ApiCreatedResponse({ type: PrizeProgress })
-  async createPrizeProgress(
-    @common.Body() data: PrizeProgressCreateInput
-  ): Promise<PrizeProgress> {
-    return await this.service.createPrizeProgress({
-      data: {
-        ...data,
-
-        kid: data.kid
-          ? {
-              connect: data.kid,
-            }
-          : undefined,
-
-        prize: data.prize
-          ? {
-              connect: data.prize,
-            }
-          : undefined,
-      },
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        datePurchased: true,
-
-        kid: {
-          select: {
-            id: true,
-          },
-        },
-
-        prize: {
-          select: {
-            id: true,
-          },
-        },
-
-        status: true,
-        dateRedeemed: true,
-      },
-    });
-  }
 
   @common.Get()
   @swagger.ApiOkResponse({ type: [PrizeProgress] })
@@ -139,103 +93,5 @@ export class PrizeProgressControllerBase {
       );
     }
     return result;
-  }
-
-  @common.Patch("/:id")
-  @swagger.ApiOkResponse({ type: PrizeProgress })
-  @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  async updatePrizeProgress(
-    @common.Param() params: PrizeProgressWhereUniqueInput,
-    @common.Body() data: PrizeProgressUpdateInput
-  ): Promise<PrizeProgress | null> {
-    try {
-      return await this.service.updatePrizeProgress({
-        where: params,
-        data: {
-          ...data,
-
-          kid: data.kid
-            ? {
-                connect: data.kid,
-              }
-            : undefined,
-
-          prize: data.prize
-            ? {
-                connect: data.prize,
-              }
-            : undefined,
-        },
-        select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          datePurchased: true,
-
-          kid: {
-            select: {
-              id: true,
-            },
-          },
-
-          prize: {
-            select: {
-              id: true,
-            },
-          },
-
-          status: true,
-          dateRedeemed: true,
-        },
-      });
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new errors.NotFoundException(
-          `No resource was found for ${JSON.stringify(params)}`
-        );
-      }
-      throw error;
-    }
-  }
-
-  @common.Delete("/:id")
-  @swagger.ApiOkResponse({ type: PrizeProgress })
-  @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  async deletePrizeProgress(
-    @common.Param() params: PrizeProgressWhereUniqueInput
-  ): Promise<PrizeProgress | null> {
-    try {
-      return await this.service.deletePrizeProgress({
-        where: params,
-        select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          datePurchased: true,
-
-          kid: {
-            select: {
-              id: true,
-            },
-          },
-
-          prize: {
-            select: {
-              id: true,
-            },
-          },
-
-          status: true,
-          dateRedeemed: true,
-        },
-      });
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new errors.NotFoundException(
-          `No resource was found for ${JSON.stringify(params)}`
-        );
-      }
-      throw error;
-    }
   }
 }

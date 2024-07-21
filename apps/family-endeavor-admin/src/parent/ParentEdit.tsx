@@ -7,9 +7,12 @@ import {
   TextInput,
   ReferenceArrayInput,
   SelectArrayInput,
+  ReferenceInput,
+  SelectInput,
 } from "react-admin";
 
 import { KidTitle } from "../kid/KidTitle";
+import { UserTitle } from "../user/UserTitle";
 
 export const ParentEdit = (props: EditProps): React.ReactElement => {
   return (
@@ -25,6 +28,9 @@ export const ParentEdit = (props: EditProps): React.ReactElement => {
         >
           <SelectArrayInput optionText={KidTitle} />
         </ReferenceArrayInput>
+        <ReferenceInput source="user.id" reference="User" label="User">
+          <SelectInput optionText={UserTitle} />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );

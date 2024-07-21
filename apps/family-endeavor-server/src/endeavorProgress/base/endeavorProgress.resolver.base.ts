@@ -14,27 +14,14 @@ import { GraphQLError } from "graphql";
 import { isRecordNotFoundError } from "../../prisma.util";
 import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { EndeavorProgress } from "./EndeavorProgress";
-import { EndeavorProgressCountArgs } from "./EndeavorProgressCountArgs";
 import { EndeavorProgressFindManyArgs } from "./EndeavorProgressFindManyArgs";
 import { EndeavorProgressFindUniqueArgs } from "./EndeavorProgressFindUniqueArgs";
-import { CreateEndeavorProgressArgs } from "./CreateEndeavorProgressArgs";
-import { UpdateEndeavorProgressArgs } from "./UpdateEndeavorProgressArgs";
-import { DeleteEndeavorProgressArgs } from "./DeleteEndeavorProgressArgs";
 import { Kid } from "../../kid/base/Kid";
 import { Endeavor } from "../../endeavor/base/Endeavor";
 import { EndeavorProgressService } from "../endeavorProgress.service";
 @graphql.Resolver(() => EndeavorProgress)
 export class EndeavorProgressResolverBase {
   constructor(protected readonly service: EndeavorProgressService) {}
-
-  async _endeavorProgressesMeta(
-    @graphql.Args() args: EndeavorProgressCountArgs
-  ): Promise<MetaQueryPayload> {
-    const result = await this.service.count(args);
-    return {
-      count: result,
-    };
-  }
 
   @graphql.Query(() => [EndeavorProgress])
   async endeavorProgresses(
@@ -52,79 +39,6 @@ export class EndeavorProgressResolverBase {
       return null;
     }
     return result;
-  }
-
-  @graphql.Mutation(() => EndeavorProgress)
-  async createEndeavorProgress(
-    @graphql.Args() args: CreateEndeavorProgressArgs
-  ): Promise<EndeavorProgress> {
-    return await this.service.createEndeavorProgress({
-      ...args,
-      data: {
-        ...args.data,
-
-        kid: args.data.kid
-          ? {
-              connect: args.data.kid,
-            }
-          : undefined,
-
-        endeavor: args.data.endeavor
-          ? {
-              connect: args.data.endeavor,
-            }
-          : undefined,
-      },
-    });
-  }
-
-  @graphql.Mutation(() => EndeavorProgress)
-  async updateEndeavorProgress(
-    @graphql.Args() args: UpdateEndeavorProgressArgs
-  ): Promise<EndeavorProgress | null> {
-    try {
-      return await this.service.updateEndeavorProgress({
-        ...args,
-        data: {
-          ...args.data,
-
-          kid: args.data.kid
-            ? {
-                connect: args.data.kid,
-              }
-            : undefined,
-
-          endeavor: args.data.endeavor
-            ? {
-                connect: args.data.endeavor,
-              }
-            : undefined,
-        },
-      });
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new GraphQLError(
-          `No resource was found for ${JSON.stringify(args.where)}`
-        );
-      }
-      throw error;
-    }
-  }
-
-  @graphql.Mutation(() => EndeavorProgress)
-  async deleteEndeavorProgress(
-    @graphql.Args() args: DeleteEndeavorProgressArgs
-  ): Promise<EndeavorProgress | null> {
-    try {
-      return await this.service.deleteEndeavorProgress(args);
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new GraphQLError(
-          `No resource was found for ${JSON.stringify(args.where)}`
-        );
-      }
-      throw error;
-    }
   }
 
   @graphql.ResolveField(() => Kid, {

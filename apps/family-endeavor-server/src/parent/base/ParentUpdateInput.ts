@@ -19,6 +19,7 @@ import {
 } from "class-validator";
 import { KidUpdateManyWithoutParentsInput } from "./KidUpdateManyWithoutParentsInput";
 import { Type } from "class-transformer";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class ParentUpdateInput {
@@ -56,6 +57,18 @@ class ParentUpdateInput {
     nullable: true,
   })
   kids?: KidUpdateManyWithoutParentsInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  @Field(() => UserWhereUniqueInput, {
+    nullable: true,
+  })
+  user?: UserWhereUniqueInput | null;
 }
 
 export { ParentUpdateInput as ParentUpdateInput };

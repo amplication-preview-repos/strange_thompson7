@@ -43,6 +43,12 @@ export class KidControllerBase {
               connect: data.parent,
             }
           : undefined,
+
+        user: data.user
+          ? {
+              connect: data.user,
+            }
+          : undefined,
       },
       select: {
         id: true,
@@ -59,6 +65,12 @@ export class KidControllerBase {
         },
 
         gender: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -85,6 +97,12 @@ export class KidControllerBase {
         },
 
         gender: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -110,6 +128,12 @@ export class KidControllerBase {
         },
 
         gender: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -138,6 +162,12 @@ export class KidControllerBase {
                 connect: data.parent,
               }
             : undefined,
+
+          user: data.user
+            ? {
+                connect: data.user,
+              }
+            : undefined,
         },
         select: {
           id: true,
@@ -154,6 +184,12 @@ export class KidControllerBase {
           },
 
           gender: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -190,6 +226,12 @@ export class KidControllerBase {
           },
 
           gender: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -241,23 +283,6 @@ export class KidControllerBase {
     return results;
   }
 
-  @common.Post("/:id/endeavorProgresses")
-  async connectEndeavorProgresses(
-    @common.Param() params: KidWhereUniqueInput,
-    @common.Body() body: EndeavorProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      endeavorProgresses: {
-        connect: body,
-      },
-    };
-    await this.service.updateKid({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
   @common.Patch("/:id/endeavorProgresses")
   async updateEndeavorProgresses(
     @common.Param() params: KidWhereUniqueInput,
@@ -266,23 +291,6 @@ export class KidControllerBase {
     const data = {
       endeavorProgresses: {
         set: body,
-      },
-    };
-    await this.service.updateKid({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/endeavorProgresses")
-  async disconnectEndeavorProgresses(
-    @common.Param() params: KidWhereUniqueInput,
-    @common.Body() body: EndeavorProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      endeavorProgresses: {
-        disconnect: body,
       },
     };
     await this.service.updateKid({
@@ -331,23 +339,6 @@ export class KidControllerBase {
     return results;
   }
 
-  @common.Post("/:id/prizeProgresses")
-  async connectPrizeProgresses(
-    @common.Param() params: KidWhereUniqueInput,
-    @common.Body() body: PrizeProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      prizeProgresses: {
-        connect: body,
-      },
-    };
-    await this.service.updateKid({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
   @common.Patch("/:id/prizeProgresses")
   async updatePrizeProgresses(
     @common.Param() params: KidWhereUniqueInput,
@@ -356,23 +347,6 @@ export class KidControllerBase {
     const data = {
       prizeProgresses: {
         set: body,
-      },
-    };
-    await this.service.updateKid({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/prizeProgresses")
-  async disconnectPrizeProgresses(
-    @common.Param() params: KidWhereUniqueInput,
-    @common.Body() body: PrizeProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      prizeProgresses: {
-        disconnect: body,
       },
     };
     await this.service.updateKid({

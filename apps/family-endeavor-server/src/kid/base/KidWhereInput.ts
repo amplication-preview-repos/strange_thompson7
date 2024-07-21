@@ -21,6 +21,7 @@ import { ParentWhereUniqueInput } from "../../parent/base/ParentWhereUniqueInput
 import { EnumKidGender } from "./EnumKidGender";
 import { EndeavorProgressListRelationFilter } from "../../endeavorProgress/base/EndeavorProgressListRelationFilter";
 import { PrizeProgressListRelationFilter } from "../../prizeProgress/base/PrizeProgressListRelationFilter";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class KidWhereInput {
@@ -114,6 +115,18 @@ class KidWhereInput {
     nullable: true,
   })
   prizeProgresses?: PrizeProgressListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  @Field(() => UserWhereUniqueInput, {
+    nullable: true,
+  })
+  user?: UserWhereUniqueInput;
 }
 
 export { KidWhereInput as KidWhereInput };

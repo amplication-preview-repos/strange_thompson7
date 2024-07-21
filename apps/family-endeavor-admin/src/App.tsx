@@ -17,14 +17,14 @@ import { KidList } from "./kid/KidList";
 import { KidCreate } from "./kid/KidCreate";
 import { KidEdit } from "./kid/KidEdit";
 import { KidShow } from "./kid/KidShow";
-import { PrizeList } from "./prize/PrizeList";
-import { PrizeCreate } from "./prize/PrizeCreate";
-import { PrizeEdit } from "./prize/PrizeEdit";
-import { PrizeShow } from "./prize/PrizeShow";
 import { RewardList } from "./reward/RewardList";
 import { RewardCreate } from "./reward/RewardCreate";
 import { RewardEdit } from "./reward/RewardEdit";
 import { RewardShow } from "./reward/RewardShow";
+import { PrizeList } from "./prize/PrizeList";
+import { PrizeCreate } from "./prize/PrizeCreate";
+import { PrizeEdit } from "./prize/PrizeEdit";
+import { PrizeShow } from "./prize/PrizeShow";
 import { PrizeProgressList } from "./prizeProgress/PrizeProgressList";
 import { PrizeProgressCreate } from "./prizeProgress/PrizeProgressCreate";
 import { PrizeProgressEdit } from "./prizeProgress/PrizeProgressEdit";
@@ -33,6 +33,10 @@ import { EndeavorProgressList } from "./endeavorProgress/EndeavorProgressList";
 import { EndeavorProgressCreate } from "./endeavorProgress/EndeavorProgressCreate";
 import { EndeavorProgressEdit } from "./endeavorProgress/EndeavorProgressEdit";
 import { EndeavorProgressShow } from "./endeavorProgress/EndeavorProgressShow";
+import { UserList } from "./user/UserList";
+import { UserCreate } from "./user/UserCreate";
+import { UserEdit } from "./user/UserEdit";
+import { UserShow } from "./user/UserShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -81,18 +85,18 @@ const App = (): React.ReactElement => {
           show={KidShow}
         />
         <Resource
-          name="Prize"
-          list={PrizeList}
-          edit={PrizeEdit}
-          create={PrizeCreate}
-          show={PrizeShow}
-        />
-        <Resource
           name="Reward"
           list={RewardList}
           edit={RewardEdit}
           create={RewardCreate}
           show={RewardShow}
+        />
+        <Resource
+          name="Prize"
+          list={PrizeList}
+          edit={PrizeEdit}
+          create={PrizeCreate}
+          show={PrizeShow}
         />
         <Resource
           name="PrizeProgress"
@@ -107,6 +111,13 @@ const App = (): React.ReactElement => {
           edit={EndeavorProgressEdit}
           create={EndeavorProgressCreate}
           show={EndeavorProgressShow}
+        />
+        <Resource
+          name="User"
+          list={UserList}
+          edit={UserEdit}
+          create={UserCreate}
+          show={UserShow}
         />
       </Admin>
     </div>

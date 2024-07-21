@@ -32,13 +32,27 @@ export class ParentControllerBase {
   @swagger.ApiCreatedResponse({ type: Parent })
   async createParent(@common.Body() data: ParentCreateInput): Promise<Parent> {
     return await this.service.createParent({
-      data: data,
+      data: {
+        ...data,
+
+        user: data.user
+          ? {
+              connect: data.user,
+            }
+          : undefined,
+      },
       select: {
         id: true,
         createdAt: true,
         updatedAt: true,
         email: true,
         name: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -56,6 +70,12 @@ export class ParentControllerBase {
         updatedAt: true,
         email: true,
         name: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -74,6 +94,12 @@ export class ParentControllerBase {
         updatedAt: true,
         email: true,
         name: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -94,13 +120,27 @@ export class ParentControllerBase {
     try {
       return await this.service.updateParent({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          user: data.user
+            ? {
+                connect: data.user,
+              }
+            : undefined,
+        },
         select: {
           id: true,
           createdAt: true,
           updatedAt: true,
           email: true,
           name: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -128,6 +168,12 @@ export class ParentControllerBase {
           updatedAt: true,
           email: true,
           name: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -164,6 +210,12 @@ export class ParentControllerBase {
         },
 
         gender: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (results === null) {

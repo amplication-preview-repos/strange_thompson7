@@ -24,7 +24,6 @@ import { EndeavorWhereUniqueInput } from "./EndeavorWhereUniqueInput";
 import { EndeavorUpdateInput } from "./EndeavorUpdateInput";
 import { EndeavorProgressFindManyArgs } from "../../endeavorProgress/base/EndeavorProgressFindManyArgs";
 import { EndeavorProgress } from "../../endeavorProgress/base/EndeavorProgress";
-import { EndeavorProgressWhereUniqueInput } from "../../endeavorProgress/base/EndeavorProgressWhereUniqueInput";
 
 export class EndeavorControllerBase {
   constructor(protected readonly service: EndeavorService) {}
@@ -240,56 +239,5 @@ export class EndeavorControllerBase {
       );
     }
     return results;
-  }
-
-  @common.Post("/:id/endeavorProgresses")
-  async connectEndeavorProgresses(
-    @common.Param() params: EndeavorWhereUniqueInput,
-    @common.Body() body: EndeavorProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      endeavorProgresses: {
-        connect: body,
-      },
-    };
-    await this.service.updateEndeavor({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Patch("/:id/endeavorProgresses")
-  async updateEndeavorProgresses(
-    @common.Param() params: EndeavorWhereUniqueInput,
-    @common.Body() body: EndeavorProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      endeavorProgresses: {
-        set: body,
-      },
-    };
-    await this.service.updateEndeavor({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/endeavorProgresses")
-  async disconnectEndeavorProgresses(
-    @common.Param() params: EndeavorWhereUniqueInput,
-    @common.Body() body: EndeavorProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      endeavorProgresses: {
-        disconnect: body,
-      },
-    };
-    await this.service.updateEndeavor({
-      where: params,
-      data,
-      select: { id: true },
-    });
   }
 }

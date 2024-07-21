@@ -14,27 +14,14 @@ import { GraphQLError } from "graphql";
 import { isRecordNotFoundError } from "../../prisma.util";
 import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { PrizeProgress } from "./PrizeProgress";
-import { PrizeProgressCountArgs } from "./PrizeProgressCountArgs";
 import { PrizeProgressFindManyArgs } from "./PrizeProgressFindManyArgs";
 import { PrizeProgressFindUniqueArgs } from "./PrizeProgressFindUniqueArgs";
-import { CreatePrizeProgressArgs } from "./CreatePrizeProgressArgs";
-import { UpdatePrizeProgressArgs } from "./UpdatePrizeProgressArgs";
-import { DeletePrizeProgressArgs } from "./DeletePrizeProgressArgs";
 import { Kid } from "../../kid/base/Kid";
 import { Prize } from "../../prize/base/Prize";
 import { PrizeProgressService } from "../prizeProgress.service";
 @graphql.Resolver(() => PrizeProgress)
 export class PrizeProgressResolverBase {
   constructor(protected readonly service: PrizeProgressService) {}
-
-  async _prizeProgressesMeta(
-    @graphql.Args() args: PrizeProgressCountArgs
-  ): Promise<MetaQueryPayload> {
-    const result = await this.service.count(args);
-    return {
-      count: result,
-    };
-  }
 
   @graphql.Query(() => [PrizeProgress])
   async prizeProgresses(
@@ -52,79 +39,6 @@ export class PrizeProgressResolverBase {
       return null;
     }
     return result;
-  }
-
-  @graphql.Mutation(() => PrizeProgress)
-  async createPrizeProgress(
-    @graphql.Args() args: CreatePrizeProgressArgs
-  ): Promise<PrizeProgress> {
-    return await this.service.createPrizeProgress({
-      ...args,
-      data: {
-        ...args.data,
-
-        kid: args.data.kid
-          ? {
-              connect: args.data.kid,
-            }
-          : undefined,
-
-        prize: args.data.prize
-          ? {
-              connect: args.data.prize,
-            }
-          : undefined,
-      },
-    });
-  }
-
-  @graphql.Mutation(() => PrizeProgress)
-  async updatePrizeProgress(
-    @graphql.Args() args: UpdatePrizeProgressArgs
-  ): Promise<PrizeProgress | null> {
-    try {
-      return await this.service.updatePrizeProgress({
-        ...args,
-        data: {
-          ...args.data,
-
-          kid: args.data.kid
-            ? {
-                connect: args.data.kid,
-              }
-            : undefined,
-
-          prize: args.data.prize
-            ? {
-                connect: args.data.prize,
-              }
-            : undefined,
-        },
-      });
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new GraphQLError(
-          `No resource was found for ${JSON.stringify(args.where)}`
-        );
-      }
-      throw error;
-    }
-  }
-
-  @graphql.Mutation(() => PrizeProgress)
-  async deletePrizeProgress(
-    @graphql.Args() args: DeletePrizeProgressArgs
-  ): Promise<PrizeProgress | null> {
-    try {
-      return await this.service.deletePrizeProgress(args);
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new GraphQLError(
-          `No resource was found for ${JSON.stringify(args.where)}`
-        );
-      }
-      throw error;
-    }
   }
 
   @graphql.ResolveField(() => Kid, {

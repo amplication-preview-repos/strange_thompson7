@@ -14,7 +14,6 @@ import { GraphQLError } from "graphql";
 import { isRecordNotFoundError } from "../../prisma.util";
 import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { Prize } from "./Prize";
-import { PrizeCountArgs } from "./PrizeCountArgs";
 import { PrizeFindManyArgs } from "./PrizeFindManyArgs";
 import { PrizeFindUniqueArgs } from "./PrizeFindUniqueArgs";
 import { CreatePrizeArgs } from "./CreatePrizeArgs";
@@ -26,15 +25,6 @@ import { PrizeService } from "../prize.service";
 @graphql.Resolver(() => Prize)
 export class PrizeResolverBase {
   constructor(protected readonly service: PrizeService) {}
-
-  async _prizesMeta(
-    @graphql.Args() args: PrizeCountArgs
-  ): Promise<MetaQueryPayload> {
-    const result = await this.service.count(args);
-    return {
-      count: result,
-    };
-  }
 
   @graphql.Query(() => [Prize])
   async prizes(@graphql.Args() args: PrizeFindManyArgs): Promise<Prize[]> {

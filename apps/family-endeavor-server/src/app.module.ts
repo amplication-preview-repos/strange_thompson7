@@ -2,10 +2,11 @@ import { Module } from "@nestjs/common";
 import { EndeavorModule } from "./endeavor/endeavor.module";
 import { ParentModule } from "./parent/parent.module";
 import { KidModule } from "./kid/kid.module";
-import { PrizeModule } from "./prize/prize.module";
 import { RewardModule } from "./reward/reward.module";
+import { PrizeModule } from "./prize/prize.module";
 import { PrizeProgressModule } from "./prizeProgress/prizeProgress.module";
 import { EndeavorProgressModule } from "./endeavorProgress/endeavorProgress.module";
+import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -21,10 +22,11 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
     EndeavorModule,
     ParentModule,
     KidModule,
-    PrizeModule,
     RewardModule,
+    PrizeModule,
     PrizeProgressModule,
     EndeavorProgressModule,
+    UserModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

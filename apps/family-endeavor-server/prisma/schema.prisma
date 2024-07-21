@@ -27,6 +27,8 @@ model Parent {
   email     String?
   name      String?
   kids      Kid[]
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 model Kid {
@@ -41,6 +43,18 @@ model Kid {
   gender             EnumKidGender?
   endeavorProgresses EndeavorProgress[]
   prizeProgresses    PrizeProgress[]
+  user               User?              @relation(fields: [userId], references: [id])
+  userId             String?
+}
+
+model Reward {
+  id         String     @id @default(cuid())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  endeavors  Endeavor[]
+  blueGems   Int?
+  redGems    Int?
+  purpleGems Int?
 }
 
 model Prize {
@@ -53,16 +67,6 @@ model Prize {
   costInPurpleGems Int?
   costInRedGems    Int?
   prizeProgresses  PrizeProgress[]
-}
-
-model Reward {
-  id         String     @id @default(cuid())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  endeavors  Endeavor[]
-  blueGems   Int?
-  redGems    Int?
-  purpleGems Int?
 }
 
 model PrizeProgress {
@@ -90,6 +94,20 @@ model EndeavorProgress {
   kidId            String?
   endeavor         Endeavor?                   @relation(fields: [endeavorId], references: [id])
   endeavorId       String?
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  firstName String?
+  lastName  String?
+  username  String   @unique
+  email     String?  @unique
+  password  String
+  roles     Json
+  parents   Parent[]
+  kids      Kid[]
 }
 
 enum EnumKidGender {

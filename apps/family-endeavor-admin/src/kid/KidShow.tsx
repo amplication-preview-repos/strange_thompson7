@@ -15,6 +15,7 @@ import { KID_TITLE_FIELD } from "./KidTitle";
 import { ENDEAVOR_TITLE_FIELD } from "../endeavor/EndeavorTitle";
 import { PRIZE_TITLE_FIELD } from "../prize/PrizeTitle";
 import { PARENT_TITLE_FIELD } from "../parent/ParentTitle";
+import { USER_TITLE_FIELD } from "../user/UserTitle";
 
 export const KidShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -30,6 +31,9 @@ export const KidShow = (props: ShowProps): React.ReactElement => {
           <TextField source={PARENT_TITLE_FIELD} />
         </ReferenceField>
         <TextField label="gender" source="gender" />
+        <ReferenceField label="User" source="user.id" reference="User">
+          <TextField source={USER_TITLE_FIELD} />
+        </ReferenceField>
         <ReferenceManyField
           reference="EndeavorProgress"
           target="kidId"

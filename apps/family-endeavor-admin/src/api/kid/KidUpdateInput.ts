@@ -2,6 +2,7 @@ import { InputJsonValue } from "../../types";
 import { ParentWhereUniqueInput } from "../parent/ParentWhereUniqueInput";
 import { EndeavorProgressUpdateManyWithoutKidsInput } from "./EndeavorProgressUpdateManyWithoutKidsInput";
 import { PrizeProgressUpdateManyWithoutKidsInput } from "./PrizeProgressUpdateManyWithoutKidsInput";
+import { UserWhereUniqueInput } from "../user/UserWhereUniqueInput";
 
 export type KidUpdateInput = {
   profilePicture?: InputJsonValue;
@@ -11,4 +12,5 @@ export type KidUpdateInput = {
   gender?: "Option1" | null;
   endeavorProgresses?: EndeavorProgressUpdateManyWithoutKidsInput;
   prizeProgresses?: PrizeProgressUpdateManyWithoutKidsInput;
+  user?: UserWhereUniqueInput | null;
 };

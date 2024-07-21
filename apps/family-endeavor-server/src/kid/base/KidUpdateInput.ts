@@ -29,6 +29,7 @@ import { Type } from "class-transformer";
 import { EnumKidGender } from "./EnumKidGender";
 import { EndeavorProgressUpdateManyWithoutKidsInput } from "./EndeavorProgressUpdateManyWithoutKidsInput";
 import { PrizeProgressUpdateManyWithoutKidsInput } from "./PrizeProgressUpdateManyWithoutKidsInput";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class KidUpdateInput {
@@ -113,6 +114,18 @@ class KidUpdateInput {
     nullable: true,
   })
   prizeProgresses?: PrizeProgressUpdateManyWithoutKidsInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  @Field(() => UserWhereUniqueInput, {
+    nullable: true,
+  })
+  user?: UserWhereUniqueInput | null;
 }
 
 export { KidUpdateInput as KidUpdateInput };

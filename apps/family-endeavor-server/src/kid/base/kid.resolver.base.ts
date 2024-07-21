@@ -14,7 +14,6 @@ import { GraphQLError } from "graphql";
 import { isRecordNotFoundError } from "../../prisma.util";
 import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { Kid } from "./Kid";
-import { KidCountArgs } from "./KidCountArgs";
 import { KidFindManyArgs } from "./KidFindManyArgs";
 import { KidFindUniqueArgs } from "./KidFindUniqueArgs";
 import { CreateKidArgs } from "./CreateKidArgs";
@@ -25,19 +24,11 @@ import { EndeavorProgress } from "../../endeavorProgress/base/EndeavorProgress";
 import { PrizeProgressFindManyArgs } from "../../prizeProgress/base/PrizeProgressFindManyArgs";
 import { PrizeProgress } from "../../prizeProgress/base/PrizeProgress";
 import { Parent } from "../../parent/base/Parent";
+import { User } from "../../user/base/User";
 import { KidService } from "../kid.service";
 @graphql.Resolver(() => Kid)
 export class KidResolverBase {
   constructor(protected readonly service: KidService) {}
-
-  async _kidsMeta(
-    @graphql.Args() args: KidCountArgs
-  ): Promise<MetaQueryPayload> {
-    const result = await this.service.count(args);
-    return {
-      count: result,
-    };
-  }
 
   @graphql.Query(() => [Kid])
   async kids(@graphql.Args() args: KidFindManyArgs): Promise<Kid[]> {
@@ -65,6 +56,12 @@ export class KidResolverBase {
               connect: args.data.parent,
             }
           : undefined,
+
+        user: args.data.user
+          ? {
+              connect: args.data.user,
+            }
+          : undefined,
       },
     });
   }
@@ -80,6 +77,12 @@ export class KidResolverBase {
           parent: args.data.parent
             ? {
                 connect: args.data.parent,
+              }
+            : undefined,
+
+          user: args.data.user
+            ? {
+                connect: args.data.user,
               }
             : undefined,
         },
@@ -144,6 +147,19 @@ export class KidResolverBase {
   })
   async getParent(@graphql.Parent() parent: Kid): Promise<Parent | null> {
     const result = await this.service.getParent(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
+  }
+
+  @graphql.ResolveField(() => User, {
+    nullable: true,
+    name: "user",
+  })
+  async getUser(@graphql.Parent() parent: Kid): Promise<User | null> {
+    const result = await this.service.getUser(parent.id);
 
     if (!result) {
       return null;

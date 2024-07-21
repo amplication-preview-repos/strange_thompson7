@@ -9,6 +9,7 @@ import {
 } from "react-admin";
 import Pagination from "../Components/Pagination";
 import { PARENT_TITLE_FIELD } from "../parent/ParentTitle";
+import { USER_TITLE_FIELD } from "../user/UserTitle";
 
 export const KidList = (props: ListProps): React.ReactElement => {
   return (
@@ -30,6 +31,9 @@ export const KidList = (props: ListProps): React.ReactElement => {
           <TextField source={PARENT_TITLE_FIELD} />
         </ReferenceField>
         <TextField label="gender" source="gender" />
+        <ReferenceField label="User" source="user.id" reference="User">
+          <TextField source={USER_TITLE_FIELD} />
+        </ReferenceField>
       </Datagrid>
     </List>
   );

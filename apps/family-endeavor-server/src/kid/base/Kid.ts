@@ -32,6 +32,7 @@ import { Parent } from "../../parent/base/Parent";
 import { EnumKidGender } from "./EnumKidGender";
 import { EndeavorProgress } from "../../endeavorProgress/base/EndeavorProgress";
 import { PrizeProgress } from "../../prizeProgress/base/PrizeProgress";
+import { User } from "../../user/base/User";
 
 @ObjectType()
 class Kid {
@@ -131,6 +132,15 @@ class Kid {
   @Type(() => PrizeProgress)
   @IsOptional()
   prizeProgresses?: Array<PrizeProgress>;
+
+  @ApiProperty({
+    required: false,
+    type: () => User,
+  })
+  @ValidateNested()
+  @Type(() => User)
+  @IsOptional()
+  user?: User | null;
 }
 
 export { Kid as Kid };

@@ -17,6 +17,7 @@ import {
   EndeavorProgress as PrismaEndeavorProgress,
   PrizeProgress as PrismaPrizeProgress,
   Parent as PrismaParent,
+  User as PrismaUser,
 } from "@prisma/client";
 
 export class KidServiceBase {
@@ -70,5 +71,13 @@ export class KidServiceBase {
         where: { id: parentId },
       })
       .parent();
+  }
+
+  async getUser(parentId: string): Promise<PrismaUser | null> {
+    return this.prisma.kid
+      .findUnique({
+        where: { id: parentId },
+      })
+      .user();
   }
 }

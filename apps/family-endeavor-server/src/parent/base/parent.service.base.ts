@@ -14,6 +14,7 @@ import {
   Prisma,
   Parent as PrismaParent,
   Kid as PrismaKid,
+  User as PrismaUser,
 } from "@prisma/client";
 
 export class ParentServiceBase {
@@ -50,5 +51,13 @@ export class ParentServiceBase {
         where: { id: parentId },
       })
       .kids(args);
+  }
+
+  async getUser(parentId: string): Promise<PrismaUser | null> {
+    return this.prisma.parent
+      .findUnique({
+        where: { id: parentId },
+      })
+      .user();
   }
 }

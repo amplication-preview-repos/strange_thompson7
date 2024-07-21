@@ -20,6 +20,7 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { Kid } from "../../kid/base/Kid";
+import { User } from "../../user/base/User";
 
 @ObjectType()
 class Parent {
@@ -78,6 +79,15 @@ class Parent {
   @Type(() => Kid)
   @IsOptional()
   kids?: Array<Kid>;
+
+  @ApiProperty({
+    required: false,
+    type: () => User,
+  })
+  @ValidateNested()
+  @Type(() => User)
+  @IsOptional()
+  user?: User | null;
 }
 
 export { Parent as Parent };

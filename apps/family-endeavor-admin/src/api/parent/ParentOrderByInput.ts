@@ -6,4 +6,5 @@ export type ParentOrderByInput = {
   updatedAt?: SortOrder;
   email?: SortOrder;
   name?: SortOrder;
+  userId?: SortOrder;
 };

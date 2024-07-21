@@ -6,12 +6,13 @@ import {
   ShowProps,
   TextField,
   DateField,
+  ReferenceField,
   ReferenceManyField,
   Datagrid,
-  ReferenceField,
 } from "react-admin";
 
 import { PARENT_TITLE_FIELD } from "./ParentTitle";
+import { USER_TITLE_FIELD } from "../user/UserTitle";
 
 export const ParentShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -22,6 +23,9 @@ export const ParentShow = (props: ShowProps): React.ReactElement => {
         <DateField source="updatedAt" label="Updated At" />
         <TextField label="email" source="email" />
         <TextField label="name" source="name" />
+        <ReferenceField label="User" source="user.id" reference="User">
+          <TextField source={USER_TITLE_FIELD} />
+        </ReferenceField>
         <ReferenceManyField reference="Kid" target="parentId" label="Kids">
           <Datagrid rowClick="show">
             <TextField label="ID" source="id" />
@@ -38,6 +42,9 @@ export const ParentShow = (props: ShowProps): React.ReactElement => {
               <TextField source={PARENT_TITLE_FIELD} />
             </ReferenceField>
             <TextField label="gender" source="gender" />
+            <ReferenceField label="User" source="user.id" reference="User">
+              <TextField source={USER_TITLE_FIELD} />
+            </ReferenceField>
           </Datagrid>
         </ReferenceManyField>
       </SimpleShowLayout>

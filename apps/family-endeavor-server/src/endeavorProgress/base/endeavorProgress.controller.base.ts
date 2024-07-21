@@ -17,58 +17,12 @@ import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
 import { EndeavorProgressService } from "../endeavorProgress.service";
-import { EndeavorProgressCreateInput } from "./EndeavorProgressCreateInput";
-import { EndeavorProgress } from "./EndeavorProgress";
 import { EndeavorProgressFindManyArgs } from "./EndeavorProgressFindManyArgs";
+import { EndeavorProgress } from "./EndeavorProgress";
 import { EndeavorProgressWhereUniqueInput } from "./EndeavorProgressWhereUniqueInput";
-import { EndeavorProgressUpdateInput } from "./EndeavorProgressUpdateInput";
 
 export class EndeavorProgressControllerBase {
   constructor(protected readonly service: EndeavorProgressService) {}
-  @common.Post()
-  @swagger.ApiCreatedResponse({ type: EndeavorProgress })
-  async createEndeavorProgress(
-    @common.Body() data: EndeavorProgressCreateInput
-  ): Promise<EndeavorProgress> {
-    return await this.service.createEndeavorProgress({
-      data: {
-        ...data,
-
-        kid: data.kid
-          ? {
-              connect: data.kid,
-            }
-          : undefined,
-
-        endeavor: data.endeavor
-          ? {
-              connect: data.endeavor,
-            }
-          : undefined,
-      },
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        status: true,
-        blueGemsEarned: true,
-        redGemsEarned: true,
-        purpleGemsEarned: true,
-
-        kid: {
-          select: {
-            id: true,
-          },
-        },
-
-        endeavor: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
-  }
 
   @common.Get()
   @swagger.ApiOkResponse({ type: [EndeavorProgress] })
@@ -139,103 +93,5 @@ export class EndeavorProgressControllerBase {
       );
     }
     return result;
-  }
-
-  @common.Patch("/:id")
-  @swagger.ApiOkResponse({ type: EndeavorProgress })
-  @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  async updateEndeavorProgress(
-    @common.Param() params: EndeavorProgressWhereUniqueInput,
-    @common.Body() data: EndeavorProgressUpdateInput
-  ): Promise<EndeavorProgress | null> {
-    try {
-      return await this.service.updateEndeavorProgress({
-        where: params,
-        data: {
-          ...data,
-
-          kid: data.kid
-            ? {
-                connect: data.kid,
-              }
-            : undefined,
-
-          endeavor: data.endeavor
-            ? {
-                connect: data.endeavor,
-              }
-            : undefined,
-        },
-        select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          status: true,
-          blueGemsEarned: true,
-          redGemsEarned: true,
-          purpleGemsEarned: true,
-
-          kid: {
-            select: {
-              id: true,
-            },
-          },
-
-          endeavor: {
-            select: {
-              id: true,
-            },
-          },
-        },
-      });
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new errors.NotFoundException(
-          `No resource was found for ${JSON.stringify(params)}`
-        );
-      }
-      throw error;
-    }
-  }
-
-  @common.Delete("/:id")
-  @swagger.ApiOkResponse({ type: EndeavorProgress })
-  @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  async deleteEndeavorProgress(
-    @common.Param() params: EndeavorProgressWhereUniqueInput
-  ): Promise<EndeavorProgress | null> {
-    try {
-      return await this.service.deleteEndeavorProgress({
-        where: params,
-        select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          status: true,
-          blueGemsEarned: true,
-          redGemsEarned: true,
-          purpleGemsEarned: true,
-
-          kid: {
-            select: {
-              id: true,
-            },
-          },
-
-          endeavor: {
-            select: {
-              id: true,
-            },
-          },
-        },
-      });
-    } catch (error) {
-      if (isRecordNotFoundError(error)) {
-        throw new errors.NotFoundException(
-          `No resource was found for ${JSON.stringify(params)}`
-        );
-      }
-      throw error;
-    }
   }
 }

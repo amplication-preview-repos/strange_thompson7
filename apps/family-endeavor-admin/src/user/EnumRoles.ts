@@ -1,3 +1,4 @@
 export enum EnumRoles {
-  User = "user",
+  Kid = "kid",
+  Parent = "parent",
 }

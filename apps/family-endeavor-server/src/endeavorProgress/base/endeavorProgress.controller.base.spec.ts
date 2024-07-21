@@ -53,10 +53,8 @@ const FIND_ONE_RESULT = {
 };
 
 const service = {
-  createEndeavorProgress() {
-    return CREATE_RESULT;
-  },
   endeavorProgresses: () => FIND_MANY_RESULT,
+
   endeavorProgress: ({ where }: { where: { id: string } }) => {
     switch (where.id) {
       case existingId:
@@ -127,18 +125,6 @@ describe("EndeavorProgress", () => {
     await app.init();
   });
 
-  test("POST /endeavorProgresses", async () => {
-    await request(app.getHttpServer())
-      .post("/endeavorProgresses")
-      .send(CREATE_INPUT)
-      .expect(HttpStatus.CREATED)
-      .expect({
-        ...CREATE_RESULT,
-        createdAt: CREATE_RESULT.createdAt.toISOString(),
-        updatedAt: CREATE_RESULT.updatedAt.toISOString(),
-      });
-  });
-
   test("GET /endeavorProgresses", async () => {
     await request(app.getHttpServer())
       .get("/endeavorProgresses")
@@ -171,28 +157,6 @@ describe("EndeavorProgress", () => {
         ...FIND_ONE_RESULT,
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
-      });
-  });
-
-  test("POST /endeavorProgresses existing resource", async () => {
-    const agent = request(app.getHttpServer());
-    await agent
-      .post("/endeavorProgresses")
-      .send(CREATE_INPUT)
-      .expect(HttpStatus.CREATED)
-      .expect({
-        ...CREATE_RESULT,
-        createdAt: CREATE_RESULT.createdAt.toISOString(),
-        updatedAt: CREATE_RESULT.updatedAt.toISOString(),
-      })
-      .then(function () {
-        agent
-          .post("/endeavorProgresses")
-          .send(CREATE_INPUT)
-          .expect(HttpStatus.CONFLICT)
-          .expect({
-            statusCode: HttpStatus.CONFLICT,
-          });
       });
   });
 

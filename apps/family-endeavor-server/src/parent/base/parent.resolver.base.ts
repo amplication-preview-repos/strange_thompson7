@@ -14,7 +14,6 @@ import { GraphQLError } from "graphql";
 import { isRecordNotFoundError } from "../../prisma.util";
 import { MetaQueryPayload } from "../../util/MetaQueryPayload";
 import { Parent } from "./Parent";
-import { ParentCountArgs } from "./ParentCountArgs";
 import { ParentFindManyArgs } from "./ParentFindManyArgs";
 import { ParentFindUniqueArgs } from "./ParentFindUniqueArgs";
 import { CreateParentArgs } from "./CreateParentArgs";
@@ -22,19 +21,11 @@ import { UpdateParentArgs } from "./UpdateParentArgs";
 import { DeleteParentArgs } from "./DeleteParentArgs";
 import { KidFindManyArgs } from "../../kid/base/KidFindManyArgs";
 import { Kid } from "../../kid/base/Kid";
+import { User } from "../../user/base/User";
 import { ParentService } from "../parent.service";
 @graphql.Resolver(() => Parent)
 export class ParentResolverBase {
   constructor(protected readonly service: ParentService) {}
-
-  async _parentsMeta(
-    @graphql.Args() args: ParentCountArgs
-  ): Promise<MetaQueryPayload> {
-    const result = await this.service.count(args);
-    return {
-      count: result,
-    };
-  }
 
   @graphql.Query(() => [Parent])
   async parents(@graphql.Args() args: ParentFindManyArgs): Promise<Parent[]> {
@@ -56,7 +47,15 @@ export class ParentResolverBase {
   async createParent(@graphql.Args() args: CreateParentArgs): Promise<Parent> {
     return await this.service.createParent({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        user: args.data.user
+          ? {
+              connect: args.data.user,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -67,7 +66,15 @@ export class ParentResolverBase {
     try {
       return await this.service.updateParent({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          user: args.data.user
+            ? {
+                connect: args.data.user,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -107,5 +114,18 @@ export class ParentResolverBase {
     }
 
     return results;
+  }
+
+  @graphql.ResolveField(() => User, {
+    nullable: true,
+    name: "user",
+  })
+  async getUser(@graphql.Parent() parent: Parent): Promise<User | null> {
+    const result = await this.service.getUser(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

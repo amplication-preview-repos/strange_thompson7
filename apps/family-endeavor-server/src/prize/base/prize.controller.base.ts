@@ -194,23 +194,6 @@ export class PrizeControllerBase {
     return results;
   }
 
-  @common.Post("/:id/prizeProgresses")
-  async connectPrizeProgresses(
-    @common.Param() params: PrizeWhereUniqueInput,
-    @common.Body() body: PrizeProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      prizeProgresses: {
-        connect: body,
-      },
-    };
-    await this.service.updatePrize({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
   @common.Patch("/:id/prizeProgresses")
   async updatePrizeProgresses(
     @common.Param() params: PrizeWhereUniqueInput,
@@ -219,23 +202,6 @@ export class PrizeControllerBase {
     const data = {
       prizeProgresses: {
         set: body,
-      },
-    };
-    await this.service.updatePrize({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/prizeProgresses")
-  async disconnectPrizeProgresses(
-    @common.Param() params: PrizeWhereUniqueInput,
-    @common.Body() body: PrizeProgressWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      prizeProgresses: {
-        disconnect: body,
       },
     };
     await this.service.updatePrize({

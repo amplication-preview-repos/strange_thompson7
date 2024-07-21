@@ -15,6 +15,7 @@ import {
 import { ParentTitle } from "../parent/ParentTitle";
 import { EndeavorProgressTitle } from "../endeavorProgress/EndeavorProgressTitle";
 import { PrizeProgressTitle } from "../prizeProgress/PrizeProgressTitle";
+import { UserTitle } from "../user/UserTitle";
 
 export const KidEdit = (props: EditProps): React.ReactElement => {
   return (
@@ -50,6 +51,9 @@ export const KidEdit = (props: EditProps): React.ReactElement => {
         >
           <SelectArrayInput optionText={PrizeProgressTitle} />
         </ReferenceArrayInput>
+        <ReferenceInput source="user.id" reference="User" label="User">
+          <SelectInput optionText={UserTitle} />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );
