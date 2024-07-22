@@ -1,0 +1,356 @@
+[
+  {
+    "role": "kid",
+    "resource": "Endeavor",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Endeavor",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Endeavor",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Endeavor",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Endeavor",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Endeavor",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Endeavor",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Parent",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Parent",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Parent",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Parent",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Parent",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Parent",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Parent",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Kid",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Kid",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Kid",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Kid",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Kid",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Kid",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Kid",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Reward",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Reward",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Reward",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Reward",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Reward",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Reward",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Reward",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Prize",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Prize",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Prize",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Prize",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Prize",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "Prize",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "Prize",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "PrizeProgress",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "PrizeProgress",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "PrizeProgress",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "PrizeProgress",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "PrizeProgress",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "PrizeProgress",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "PrizeProgress",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "EndeavorProgress",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "EndeavorProgress",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "EndeavorProgress",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "EndeavorProgress",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "EndeavorProgress",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "EndeavorProgress",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "EndeavorProgress",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "kid",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "parent",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  }
+]
